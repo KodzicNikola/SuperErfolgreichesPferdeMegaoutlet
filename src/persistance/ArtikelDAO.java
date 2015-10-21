@@ -16,7 +16,7 @@ public class ArtikelDAO extends DAO{
     /**
     * String zur Erstellung der Tabelle der Artikel
     **/
-    private static final String initTable = "CREATE TABLE ARTIKEL( " +
+    private static final String initTabelle = "CREATE TABLE ARTIKEL( " +
             "id identity primary key," +
             "originalid long"+
             "name varchar(50)," +
@@ -35,7 +35,7 @@ public class ArtikelDAO extends DAO{
 
         try {
             Connection connection = getConnection();
-            PreparedStatement prep = connection.prepareStatement(initTable);
+            PreparedStatement prep = connection.prepareStatement(initTabelle);
             prep.execute();
             prep.close();
             connection.close();
@@ -187,7 +187,7 @@ public class ArtikelDAO extends DAO{
             prep.setString(5, a.getBildadresse());
             prep.setBoolean(6, a.isKlon());
             prep.execute();
-            prep = c.prepareStatement("SELECT * FROM Pferde WHERE id = ?;"); //Erstellt eine Abfrage um zu sehen, welche Artikel betroffen waren
+            prep = c.prepareStatement("SELECT * FROM Artikel WHERE id = ?;"); //Erstellt eine Abfrage um zu sehen, welche Artikel betroffen waren
             prep.setLong(1, a.getOriginalId());
 
             ResultSet r = prep.executeQuery();
@@ -226,12 +226,12 @@ public class ArtikelDAO extends DAO{
 
         try {
             Connection c = getConnection();
-            PreparedStatement prep = c.prepareStatement("DELETE FROM Pferde WHERE id = ?;");
+            PreparedStatement prep = c.prepareStatement("DELETE FROM Artikel WHERE id = ?;");
             prep.setLong(1,a.getId());
             prep.execute();
             prep.close();
 
-            prep = c.prepareStatement("SELECT * FROM Pferde WHERE id = ?;");
+            prep = c.prepareStatement("SELECT * FROM Artikel WHERE id = ?;");
             prep.setLong(1,a.getId());
             ResultSet r = prep.executeQuery();
 
@@ -281,6 +281,30 @@ public class ArtikelDAO extends DAO{
         }
 
         return result;
+    }
+
+    /**
+     * Gibt die Liste aller Kopien für einen Artikel, die für Rechnungen erstellt wurden
+     * @param id    ID des gesuchten Originalartikels
+     * @return      Liste der gefundenen Ergebnisse
+     */
+    public ArrayList<Artikel> getKloneOf(long id){
+
+        ArrayList<Artikel> results;
+        try {
+
+            PreparedStatement prep = getConnection().prepareStatement("SELECT * FROM Artikel WHERE originalid = ?;");
+            prep.setLong(1,id);
+            ResultSet r = prep.executeQuery();
+
+            results = toArtikel(r);
+
+        } catch (SQLException s){
+            System.out.println(s.toString());
+            results = new ArrayList<>();
+        }
+
+        return results;
     }
 
 }
