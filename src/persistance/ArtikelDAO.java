@@ -188,7 +188,7 @@ public class ArtikelDAO extends DAO{
             prep.setBoolean(6, a.isKlon());
             prep.execute();
             prep = c.prepareStatement("SELECT * FROM Pferde WHERE id = ?;"); //Erstellt eine Abfrage um zu sehen, welche Artikel betroffen waren
-            prep.setLong(1,a.getOriginalId());
+            prep.setLong(1, a.getOriginalId());
 
             ResultSet r = prep.executeQuery();
 
@@ -208,5 +208,79 @@ public class ArtikelDAO extends DAO{
         return false;
     }
 
+    /**
+     * Löscht einen Artikel aus dem Inventar, falls vorhanden und unabhängig von den Rechnungseinträgen
+     * @param d     Der zu löschende Artikel
+     * @return      True, falls sich nach dem Vorgang kein Artikel mit der ID von d in der Datenbank befindet, sonst false
+     */
+    @Override
+    public boolean delete(Domain d) {
+
+        Artikel a;
+
+        if(d instanceof Artikel){
+            a = (Artikel) d;
+        } else {
+            return false;
+        }
+
+        try {
+            Connection c = getConnection();
+            PreparedStatement prep = c.prepareStatement("DELETE FROM Pferde WHERE id = ?;");
+            prep.setLong(1,a.getId());
+            prep.execute();
+            prep.close();
+
+            prep = c.prepareStatement("SELECT * FROM Pferde WHERE id = ?;");
+            prep.setLong(1,a.getId());
+            ResultSet r = prep.executeQuery();
+
+            boolean succsess = !r.next();
+
+            r.close();
+            prep.close();
+            c.close();
+            return succsess;
+
+        } catch (SQLException s){
+            System.out.println(s.toString());
+        }
+
+        return false;
+    }
+
+    /**
+     * Holt einen Artikel aus der Datenbank anhand der Id
+     * @param id    Id des gesuchten Artikels
+     * @return      Gesuchter Artikel oder null, falls nicht gefunden
+     */
+    public Artikel getArtikelById(long id) {
+        Artikel result;
+        try {
+            getConnection();
+            PreparedStatement p = getConnection().prepareStatement("SELECT * FROM Artikel WHERE id = ?");
+            p.setLong(1,id);
+            ResultSet r = p.executeQuery();
+
+            if (!r.next()){
+                r.close();
+                p.close();
+                getConnection().close();
+                return null;
+            }
+
+            result = new Artikel(id,r.getLong("originalid"), r.getString("name"), r.getBigDecimal("preis").floatValue(),
+                    r.getInt("stueckzahl"), r.getString("bildadresse"), r.getBoolean("klon"));
+
+            r.close();
+            p.close();
+            getConnection().close();
+        } catch (SQLException s){
+            System.out.println(s.toString());
+            result = null;
+        }
+
+        return result;
+    }
 
 }

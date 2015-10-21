@@ -139,4 +139,8 @@ public class Artikel implements Domain {
     public String getBildadresse() {
         return bildadresse;
     }
+
+    public long getId() {
+        return id;
+    }
 }
