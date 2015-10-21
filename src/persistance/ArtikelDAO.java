@@ -176,21 +176,28 @@ public class ArtikelDAO extends DAO{
 
         try {
             Connection c = getConnection();
-            PreparedStatement statement = c.prepareStatement("UPDATE Pferde SET " +
-                    "name = '" + p.getName() + "', " +
-                    "foto = '" + p.getBildAdresse() + "', " +
-                    "mingeschw = " + p.getMinGeschw() + ", " +
-                    "maxgeschw = " + p.getMaxGeschw() +
-                    " WHERE id = " + p.getId() + ";");
-            statement.execute();
-            ResultSet r = c.prepareStatement("SELECT * FROM Pferde WHERE id = "+ p.getId()+";").executeQuery();
+            PreparedStatement prep = c.prepareStatement("UPDATE Artikel SET " +
+                    "originalid = ?, name = ?, preis = ?, " +
+                    "stueckzahl = ?, bildadresse = ?, klon = ? "+
+                    "WHERE id = ?;");
+            prep.setLong(1, a.getOriginalId());
+            prep.setString(2, a.getName());
+            prep.setBigDecimal(3, new BigDecimal(Float.toString(a.getPreis())));
+            prep.setInt(4, a.getStueckzahl());
+            prep.setString(5, a.getBildadresse());
+            prep.setBoolean(6, a.isKlon());
+            prep.execute();
+            prep = c.prepareStatement("SELECT * FROM Pferde WHERE id = ?;"); //Erstellt eine Abfrage um zu sehen, welche Artikel betroffen waren
+            prep.setLong(1,a.getOriginalId());
+
+            ResultSet r = prep.executeQuery();
 
             if(!r.next()){
                 return false;
             }
 
             r.close();
-            statement.close();
+            prep.close();
             c.close();
             return true;
 
