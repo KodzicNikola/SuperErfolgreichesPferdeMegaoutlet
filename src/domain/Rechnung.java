@@ -1,6 +1,7 @@
 package domain;
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
+import persistance.RechnungsDAO;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -44,7 +45,24 @@ public class Rechnung implements Domain{
         artikelListe = new ArrayList<Artikel>();
     }
 
-    //TODO Berechnen der ID
+    /**
+     * Konstruktor für die Rechnung, ID wird automatisiert zugewiesen
+     * @param date  Zeitpunkt, an dem die Rechnung erstellt wird.
+     */
+    public Rechnung(Timestamp date){
+        id = RechnungsDAO.getNextFreeId();
+        this.date = date;
+        artikelListe = new ArrayList<Artikel>();
+    }
+
+    /**
+     * Konstruktor für die Rechnung, bei der ID und Datum automatisiert zugewiesen werden
+     */
+    public Rechnung(){
+        id = RechnungsDAO.getNextFreeId();
+        date = new Timestamp(System.currentTimeMillis());
+        artikelListe = new ArrayList<Artikel>();
+    }
 
     /**
      * Fügt einen Artikel in die Rechnung ein

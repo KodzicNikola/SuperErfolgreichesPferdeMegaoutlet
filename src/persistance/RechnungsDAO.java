@@ -194,14 +194,15 @@ public class RechnungsDAO extends DAO{
         return result;
     }
 
+    /**
+     * Aktualisiert eine Rechnung, indem der vorige Eintrag gelöscht wird, und ein neuer eingetragen wird.
+     * @param d     Die zu aktualisierende Rechnung
+     * @return      True, falls der Vorgang erfolgreich war, sonst False
+     */
     @Override
     public boolean update(Domain d) {
 
-        Rechnung r;
-
-        if(d instanceof Rechnung){
-            r = (Rechnung) d;
-        } else {
+        if(!(d instanceof Rechnung)){
             return false;
         }
 
@@ -229,4 +230,24 @@ public class RechnungsDAO extends DAO{
         return r.getArtikelListe().size()>0;
     }
 
+    /**
+     * Ermittelt die nächste freie ID, die noch nicht verwendet wurde
+     * @return  die nächste freie ID
+     */
+    public static int getNextFreeId() {
+        int result = 0;
+
+        try{
+
+            ResultSet res = getConnection().prepareStatement("select max(id) as groesste from Rechnungen;").executeQuery();
+            if(res.next()){
+                result = res.getInt("groesste")+1;
+            }
+
+        } catch (SQLException s) {
+            System.out.println(s.toString());
+        }
+
+        return result;
+    }
 }
