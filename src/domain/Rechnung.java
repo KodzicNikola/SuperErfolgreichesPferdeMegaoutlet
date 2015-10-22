@@ -9,7 +9,7 @@ public class Rechnung implements Domain{
     /**
      * Eindeutige ID einer Rechnung
      */
-    long id;
+    int id;
 
     /**
      * Datum der Rechnung, fungiert als lesbare Bezeichnung
@@ -27,7 +27,7 @@ public class Rechnung implements Domain{
      * @param date          Zeitpunkt, an dem die Rechnung erstellt wurde
      * @param artikelListe  Liste der Artikel auf der Rechnung
      */
-    public Rechnung(long id, Timestamp date, ArrayList<Artikel> artikelListe){
+    public Rechnung(int id, Timestamp date, ArrayList<Artikel> artikelListe){
         this.id = id;
         this.date = date;
         this.artikelListe = artikelListe;
@@ -38,13 +38,23 @@ public class Rechnung implements Domain{
      * @param id    Eindeutige ID der Rechnung
      * @param date  Zetpunkt, an dem die Rechnung erstellt wurde
      */
-    public Rechnung(long id, Timestamp date){
+    public Rechnung(int id, Timestamp date){
         this.id = id;
         this.date = date;
         artikelListe = new ArrayList<Artikel>();
     }
 
-    public long getId() {
+    //TODO Berechnen der ID
+
+    /**
+     * Fügt einen Artikel in die Rechnung ein
+     * @param a     Der einzufügende Artikel
+     */
+    public void addArtikel(Artikel a){
+        artikelListe.add(a);
+    }
+
+    public int getId() {
         return id;
     }
 
