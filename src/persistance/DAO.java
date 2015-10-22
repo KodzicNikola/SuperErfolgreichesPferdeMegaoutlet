@@ -76,5 +76,11 @@ public abstract class DAO {
      * @return      True, falls Vorgang erfolgreich war, sonst False
      */
     public abstract boolean update(Domain d);
+
+    /**
+     * Löscht den Eintrag einer Domain
+     * @param d     Die zu löschende Domain
+     * @return      True, falls anschließend keine Instanz der Domain mehr in der Tabelle existiert
+     */
     public abstract boolean delete(Domain d);
 }
