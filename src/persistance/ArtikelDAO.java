@@ -3,6 +3,7 @@ package persistance;
 
 import domain.Artikel;
 import domain.Domain;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -25,6 +26,7 @@ public class ArtikelDAO extends DAO{
             "stueckzahl int,"+
             "klon bool);";
 
+    protected static Logger logger = Logger.getLogger(ArtikelDAO.class);
 
     /**
      * Erstellt eine Tabelle für Artikel, falls noch keine existiert
@@ -41,7 +43,8 @@ public class ArtikelDAO extends DAO{
             connection.close();
             return true;
         } catch (SQLException s) {
-                return false;
+            logger.debug("createTable fehlgeschlagen, Tabelle vorhanden?", s);
+            return false;
         }
     }
 
@@ -75,7 +78,7 @@ public class ArtikelDAO extends DAO{
                 result.add(a);
             }
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("toArtikel fehlgeschlagen, falsch aus Resultset gelesen", s);
             result = null;
         }
         return result;
@@ -117,7 +120,7 @@ public class ArtikelDAO extends DAO{
             getConnection().close();
             return true;
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("create fehlgeschlagen", s);
         }
 
         return false;
@@ -146,7 +149,7 @@ public class ArtikelDAO extends DAO{
             c.close();
 
         } catch (SQLException s) {
-            System.out.println(s.toString());
+            logger.debug("read fehlgeschlagen", s);
             result = new ArrayList<>();
         }
 
@@ -202,7 +205,7 @@ public class ArtikelDAO extends DAO{
             return true;
 
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("update fehlgeschlagen", s);
         }
 
         return false;
@@ -243,14 +246,14 @@ public class ArtikelDAO extends DAO{
             return succsess;
 
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("delete fehlgeschlagen", s);
         }
 
         return false;
     }
 
     /**
-     * Holt einen Artikel aus der Datenbank anhand der Id
+     * Holt einen Artikel aus der Datenbank anhand der ID
      * @param id    Id des gesuchten Artikels
      * @return      Gesuchter Artikel oder null, falls nicht gefunden
      */
@@ -276,7 +279,7 @@ public class ArtikelDAO extends DAO{
             p.close();
             getConnection().close();
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("getArtikelById fehlgeschlagen", s);
             result = null;
         }
 
@@ -300,7 +303,7 @@ public class ArtikelDAO extends DAO{
             results = toArtikel(r);
 
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("getKloneOf fehlgeschlagen", s);
             results = new ArrayList<>();
         }
 

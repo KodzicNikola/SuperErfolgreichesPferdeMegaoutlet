@@ -3,6 +3,7 @@ package persistance;
 import domain.Artikel;
 import domain.Domain;
 import domain.Rechnung;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +24,7 @@ public class RechnungsDAO extends DAO{
             "originalartikel IDENTITY REFERENCES Artikel(originalid)"+
             "primary key(id, artikelid));";
 
+    protected static Logger logger = Logger.getLogger(RechnungsDAO.class);
 
     /**
      * Erstellt die Tabellen für Rechnungen und deren Einträge
@@ -40,6 +42,7 @@ public class RechnungsDAO extends DAO{
             connection.close();
             return true;
         } catch (SQLException s) {
+            logger.debug("createTable fehlgeschlagen, Tabelle vorhanden?", s);
             return false;
         }
     }
@@ -82,7 +85,7 @@ public class RechnungsDAO extends DAO{
             getConnection().close();
             return true;
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("create fehlgeschlagen", s);
         }
 
         return false;
@@ -121,7 +124,7 @@ public class RechnungsDAO extends DAO{
             return succsess;
 
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("delete fehlgeschlagen", s);
         }
 
         return false;
@@ -150,7 +153,7 @@ public class RechnungsDAO extends DAO{
             c.close();
 
         } catch (SQLException s) {
-            System.out.println(s.toString());
+            logger.debug("read fehlgeschlagen", s);
             result = new ArrayList<>();
         }
 
@@ -168,7 +171,7 @@ public class RechnungsDAO extends DAO{
         HashMap<Integer,Rechnung> gefundeneRechnungen = new HashMap<>(); //Merkt sich alle gefundenen Rechnungen
         try{
             while(results.next()){  //Erstellt und befüllt Rechnungen
-                Integer id = new Integer(results.getInt("id"));
+                Integer id = results.getInt("id");
                 Rechnung r;
                 if(!gefundeneRechnungen.containsKey(id)){
                     r = new Rechnung(id,results.getTimestamp("datum"));
@@ -183,7 +186,7 @@ public class RechnungsDAO extends DAO{
 
             }
         } catch (SQLException s){
-            System.out.println(s.toString());
+            logger.debug("toRechnung fehlgeschlagen", s);
         }
 
         ArrayList<Rechnung> result = new ArrayList<>();
@@ -214,8 +217,10 @@ public class RechnungsDAO extends DAO{
                 throw new Exception("Rechnung deleted but not updated!");
             }
             return true;
+        } catch (SQLException s) {
+            logger.debug("update fehlgeschlagen, konnte nicht löschen",s);
         } catch (Exception e){
-            System.out.println(e.toString());
+            logger.error("update fehlgeschlagen, gelöscht aber nicht neu eingetragen!", e);
         }
 
         return false;
@@ -245,7 +250,7 @@ public class RechnungsDAO extends DAO{
             }
 
         } catch (SQLException s) {
-            System.out.println(s.toString());
+            logger.debug("getNextFreeID fehlgeschlagen, IDs müssen überprüft werden", s);
         }
 
         return result;
