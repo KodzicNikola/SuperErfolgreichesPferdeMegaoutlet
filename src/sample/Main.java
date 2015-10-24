@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.sql.PreparedStatement;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 public class Main extends Application {
 
@@ -19,7 +19,9 @@ public class Main extends Application {
     }
 
 
+    private static Logger log = Logger.getLogger(Main.class);
     public static void main(String[] args) {
-
+        BasicConfigurator.configure();
+        log.debug("test");
     }
 }

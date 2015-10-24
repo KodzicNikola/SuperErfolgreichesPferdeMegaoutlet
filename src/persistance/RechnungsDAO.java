@@ -24,7 +24,7 @@ public class RechnungsDAO extends DAO{
             "originalartikel IDENTITY REFERENCES Artikel(originalid)"+
             "primary key(id, artikelid));";
 
-    protected static Logger logger = Logger.getLogger(RechnungsDAO.class);
+    private static Logger logger = Logger.getLogger(RechnungsDAO.class);
 
     /**
      * Erstellt die Tabellen für Rechnungen und deren Einträge

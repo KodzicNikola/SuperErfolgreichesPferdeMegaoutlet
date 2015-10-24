@@ -26,7 +26,7 @@ public class ArtikelDAO extends DAO{
             "stueckzahl int,"+
             "klon bool);";
 
-    protected static Logger logger = Logger.getLogger(ArtikelDAO.class);
+    private static Logger logger = Logger.getLogger(ArtikelDAO.class);
 
     /**
      * Erstellt eine Tabelle für Artikel, falls noch keine existiert
