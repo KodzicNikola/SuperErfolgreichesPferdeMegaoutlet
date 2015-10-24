@@ -16,11 +16,11 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="736.0">
                <children>
-                  <TableView layoutX="14.0" layoutY="14.0" prefHeight="393.0" prefWidth="351.0">
+                  <TableView fx:id="artikelTable" layoutX="14.0" layoutY="14.0" prefHeight="393.0" prefWidth="351.0">
                     <columns>
                       <TableColumn fx:id="artikelNameColumn" prefWidth="191.0" text="Artikel" />
-                        <TableColumn fx:id="artikelStueckzahlColumn" prefWidth="81.0" text="Inventar" />
-                      <TableColumn fx:id="artikelPreisColumn" prefWidth="78.0" text="Preis" />
+                        <TableColumn fx:id="artikelStueckzahlColumn" prefWidth="69.0" text="Inventar" />
+                      <TableColumn fx:id="artikelPreisColumn" prefWidth="90.0" text="Preis" />
                     </columns>
                   </TableView>
                   <ImageView fx:id="artikelImage" fitHeight="174.0" fitWidth="288.0" layoutX="385.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
@@ -74,32 +74,45 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="artikelSpeichernButton" layoutX="386.0" layoutY="378.0" mnemonicParsing="false" text="Speichern">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="artikelNeuButton" layoutX="549.0" layoutY="378.0" mnemonicParsing="false" text="Neuer Artikel...">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="artikelImageButton" layoutX="385.0" layoutY="196.0" mnemonicParsing="false" text="Bild...">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
+                  <Button fx:id="artikelSpeichernButton" layoutX="385.0" layoutY="381.0" mnemonicParsing="false" text="Speichern" />
+                  <Button fx:id="artikelNeuButton" layoutX="564.0" layoutY="380.0" mnemonicParsing="false" text="Neuer Artikel..." />
+                  <Button fx:id="artikelImageButton" layoutX="386.0" layoutY="198.0" mnemonicParsing="false" text="Bild..." />
                   <Label fx:id="artikelImageLabel" layoutX="480.0" layoutY="201.0" prefHeight="20.0" prefWidth="202.0" textAlignment="RIGHT">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
+                  <Button fx:id="artikelLoeschenButton" layoutX="480.0" layoutY="380.0" mnemonicParsing="false" text="Löschen" />
                </children></AnchorPane>
       </content>
     </Tab>
     <Tab text="Rechnungen">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="rechnungenTable" layoutX="14.0" layoutY="14.0" prefHeight="396.0" prefWidth="280.0">
+                    <columns>
+                      <TableColumn fx:id="rechnungsIdColumn" prefWidth="89.0" text="ID" />
+                      <TableColumn fx:id="rechnungsDatumColumn" prefWidth="109.0" text="Datum" />
+                        <TableColumn fx:id="rechnungsSummeColumn" prefWidth="81.0" text="Summe" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="rechnungsEintragsTable" layoutX="333.0" layoutY="39.0" prefHeight="328.0" prefWidth="353.0">
+                    <columns>
+                      <TableColumn fx:id="artikelNameEintragColumn" prefWidth="143.0" text="Artikel" />
+                      <TableColumn fx:id="artikelPreisEintragColumn" prefWidth="67.0" text="Preis" />
+                        <TableColumn fx:id="artikelStueckEintragColumn" prefWidth="49.0" text="Stück" />
+                        <TableColumn fx:id="artikelSummeEintragColumn" prefWidth="93.0" text="Summe" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="475.0" layoutY="14.0" prefHeight="19.0" prefWidth="69.0" text="Einträge:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="rechnungNeuButton" layoutX="333.0" layoutY="385.0" mnemonicParsing="false" text="Neue Rechnung..." />
+                  <Button fx:id="rechnungDeleteButton" layoutX="614.0" layoutY="385.0" mnemonicParsing="false" text="Löschen" />
+               </children></AnchorPane>
       </content>
     </Tab>
   </tabs>

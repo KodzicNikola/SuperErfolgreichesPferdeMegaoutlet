@@ -83,4 +83,12 @@ public class Rechnung implements Domain{
     public ArrayList<Artikel> getArtikelListe() {
         return artikelListe;
     }
+
+    public float getSumme() {
+        float result = 0;
+        for(Artikel a : artikelListe){
+            result += a.getPreis();
+        }
+        return result;
+    }
 }
