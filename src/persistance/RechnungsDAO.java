@@ -20,8 +20,8 @@ public class RechnungsDAO extends DAO{
     private static final String initTabelle = "CREATE TABLE Rechnungen( " +
             "id INT," +
             "datum timestamp,"+
-            "artikelid IDENTITY REFERENCES Artikel(id)," +
-            "originalartikel IDENTITY REFERENCES Artikel(originalid)"+
+            "artikelid bigint REFERENCES Artikel(id)," +
+            "originalartikel long,"+
             "primary key(id, artikelid));";
 
     private static Logger logger = Logger.getLogger(RechnungsDAO.class);

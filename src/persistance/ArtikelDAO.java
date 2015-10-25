@@ -17,12 +17,13 @@ public class ArtikelDAO extends DAO{
     /**
     * String zur Erstellung der Tabelle der Artikel
     **/
-    private static final String initTabelle = "CREATE TABLE ARTIKEL( " +
-            "id identity primary key," +
-            "originalid long"+
+    private static final String initTabelle = ""+
+            "CREATE TABLE ARTIKEL( " +
+            "id bigint identity primary key," +
+            "originalid long,"+
             "name varchar(50)," +
             "bildadresse varchar(255)," +
-            "preis decimal(20,2)"+
+            "preis decimal(20,2),"+
             "stueckzahl int,"+
             "klon bool);";
 

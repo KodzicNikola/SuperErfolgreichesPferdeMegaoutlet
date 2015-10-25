@@ -6,12 +6,11 @@ import domain.Rechnung;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import service.DataManagementService;
 
 
 public class MainMenuController {
@@ -19,6 +18,9 @@ public class MainMenuController {
     /**
      *  TAB: Artikel
      */
+    @FXML
+    private TableView artikelTable;
+
     @FXML
     private TableColumn<Artikel,String> artikelNameColumn;
     @FXML
@@ -54,6 +56,9 @@ public class MainMenuController {
      * TAB: Rechnungen
      */
     @FXML
+    private TableView rechnungenTable;
+
+    @FXML
     private TableColumn<Rechnung, Integer> rechnungsIdColumn;
     @FXML
     private TableColumn<Rechnung, String> rechnungsDatumColumn;
@@ -75,6 +80,10 @@ public class MainMenuController {
     private Button rechnungDeleteButton;
 
 
+    public MainMenuController(){
+
+    }
+
     /**
      * Initialisiert die Klasse
      */
@@ -88,6 +97,8 @@ public class MainMenuController {
                 -> new SimpleIntegerProperty(cellData.getValue().getStueckzahl()).asObject());
         artikelPreisColumn.setCellValueFactory(cellData
                 -> new SimpleFloatProperty((cellData.getValue().getPreis())).asObject());
+
+        artikelTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllArtikel()));
 
         //Vorbereitung der Rechnungstabellen
         rechnungsIdColumn.setCellValueFactory(cellData
@@ -105,6 +116,9 @@ public class MainMenuController {
         artikelSummeEintragColumn.setCellValueFactory(cellData
                 -> new SimpleFloatProperty(cellData.getValue().getPreis()*cellData.getValue().getStueckzahl()).asObject());
 
+        rechnungenTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllRechungen()));
+
+        System.out.println(((Artikel) artikelTable.getItems().get(0)).getOriginalId());
     }
 
 }
