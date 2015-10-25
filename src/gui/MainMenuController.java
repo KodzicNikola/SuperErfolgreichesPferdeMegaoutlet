@@ -9,17 +9,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import service.DataManagementService;
 
+import java.util.Optional;
+
 
 public class MainMenuController {
+
+    private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(MainMenuController.class);
 
     /**
      *  TAB: Artikel
      */
     @FXML
-    private TableView artikelTable;
+    private TableView<Artikel> artikelTable;
 
     @FXML
     private TableColumn<Artikel,String> artikelNameColumn;
@@ -37,11 +42,11 @@ public class MainMenuController {
     private Label artikelImageLabel;
 
     @FXML
-    private TextField artikelName;
+    private TextField artikelNameField;
     @FXML
-    private TextField artikelPreis;
+    private TextField artikelPreisField;
     @FXML
-    private TextField artikelVerfuegbar;
+    private TextField artikelVerfuegbarField;
 
     @FXML
     private Button artikelImageButton;
@@ -98,7 +103,11 @@ public class MainMenuController {
         artikelPreisColumn.setCellValueFactory(cellData
                 -> new SimpleFloatProperty((cellData.getValue().getPreis())).asObject());
 
+        showArtikelDetails(null);
+
         artikelTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllArtikel()));
+        artikelTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showArtikelDetails(newValue));
 
         //Vorbereitung der Rechnungstabellen
         rechnungsIdColumn.setCellValueFactory(cellData
@@ -118,7 +127,103 @@ public class MainMenuController {
 
         rechnungenTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllRechungen()));
 
-        System.out.println(((Artikel) artikelTable.getItems().get(0)).getOriginalId());
+    }
+
+
+    /**
+     * Zeigt die Details eines ausgwewählten Artikels
+     * @param a     Artikel, der angezeigt werden soll, null leert die Anzeige
+     */
+    private void showArtikelDetails(Artikel a) {
+        if (a==null){
+            artikelImage.setVisible(false);
+            artikelImageLabel.setText("Kein Artikel ausgewählt");
+            artikelIdLabel.setText("");
+            artikelNameField.setText("");
+            artikelPreisField.setText("");
+            artikelVerfuegbarField.setText("");
+            artikelSpeichernButton.setDisable(true);
+            artikelLoeschenButton.setDisable(true);
+        } else {
+            try{
+                Image image = new Image(a.getBildadresse());
+                artikelImage.setImage(image);
+            } catch (Exception e) {
+                logger.info("Konnte Artikelbild nicht finden");
+            }
+            artikelImage.setVisible(true);
+            artikelImageLabel.setText(a.getBildadresse());
+            artikelIdLabel.setText(a.getId()+"");
+            artikelNameField.setText(a.getName());
+            artikelPreisField.setText(a.getPreis()+"");
+            artikelVerfuegbarField.setText(a.getStueckzahl()+"");
+            artikelSpeichernButton.setDisable(false);
+            artikelLoeschenButton.setDisable(false);
+        }
+
+    }
+
+    /**
+     * Löscht einen Artikel aus der Tabelle
+     */
+    public void handleDeleteArtikel(){
+        Artikel a = artikelTable.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Artikel löschen");
+        alert.setHeaderText(null);
+        alert.setContentText("Sind Sie sicher, dass Sie den Artikel " + a.getName() + " unwiderruflich löschen wollen?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            int selectedIndex = artikelTable.getSelectionModel().getSelectedIndex();
+
+            if(DataManagementService.delete(a)){
+                artikelTable.getItems().remove(selectedIndex);
+                artikelTable.setVisible(false);
+                artikelTable.setVisible(true);
+
+            }
+        }
+
+    }
+
+    public void handleArtikelSpeichern(){
+        String name;
+        String bildadresse = artikelTable.getSelectionModel().getSelectedItem().getBildadresse();
+        String preis;
+        String stueckzahl;
+        long id = artikelTable.getSelectionModel().getSelectedItem().getId();
+
+        if(artikelNameField.getText().equals("")){
+            name = artikelTable.getSelectionModel().getSelectedItem().getName();
+        } else {
+            name = artikelNameField.getText();
+        }
+        if(artikelPreisField.getText().equals("")){
+            preis = artikelTable.getSelectionModel().getSelectedItem().getPreis() + "";
+        } else {
+            preis = artikelPreisField.getText();
+        }
+        if(artikelVerfuegbarField.getText().equals("")){
+            stueckzahl = artikelTable.getSelectionModel().getSelectedItem().getStueckzahl() + "";
+        } else {
+            stueckzahl = artikelVerfuegbarField.getText();
+        }
+
+        try{
+            DataManagementService.updateArtikel(id, name, bildadresse, preis, stueckzahl);
+
+        } catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Speichern fehlgeschlagen");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+        }
+
+        artikelTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllArtikel()));
+        artikelTable.setVisible(false);
+        artikelTable.setVisible(true);
     }
 
 }

@@ -19,7 +19,7 @@ public class ArtikelDAO extends DAO{
     **/
     private static final String initTabelle = ""+
             "CREATE TABLE ARTIKEL( " +
-            "id bigint identity primary key," +
+            "id long identity primary key," +
             "originalid long,"+
             "name varchar(50)," +
             "bildadresse varchar(255)," +
@@ -180,6 +180,13 @@ public class ArtikelDAO extends DAO{
 
         try {
             Connection c = getConnection();
+            PreparedStatement p = c.prepareStatement("select Count(*) as alle from Artikel where id = ?");
+            p.setLong(1,a.getId());
+            ResultSet r = p.executeQuery();
+            while(r.next()){
+                System.out.println(r.getString("alle"));
+                System.out.println(a.getId());
+            }
             PreparedStatement prep = c.prepareStatement("UPDATE Artikel SET " +
                     "originalid = ?, name = ?, preis = ?, " +
                     "stueckzahl = ?, bildadresse = ?, klon = ? "+
@@ -190,11 +197,12 @@ public class ArtikelDAO extends DAO{
             prep.setInt(4, a.getStueckzahl());
             prep.setString(5, a.getBildadresse());
             prep.setBoolean(6, a.isKlon());
+            prep.setLong(7,a.getId());
             prep.execute();
             prep = c.prepareStatement("SELECT * FROM Artikel WHERE id = ?;"); //Erstellt eine Abfrage um zu sehen, welche Artikel betroffen waren
-            prep.setLong(1, a.getOriginalId());
+            prep.setLong(1, a.getId());
 
-            ResultSet r = prep.executeQuery();
+            r = prep.executeQuery();
 
             if(!r.next()){
                 return false;

@@ -74,7 +74,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="artikelSpeichernButton" layoutX="385.0" layoutY="381.0" mnemonicParsing="false" text="Speichern" />
+                  <Button fx:id="artikelSpeichernButton" layoutX="385.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleArtikelSpeichern" text="Speichern" />
                   <Button fx:id="artikelNeuButton" layoutX="564.0" layoutY="380.0" mnemonicParsing="false" text="Neuer Artikel..." />
                   <Button fx:id="artikelImageButton" layoutX="386.0" layoutY="198.0" mnemonicParsing="false" text="Bild..." />
                   <Label fx:id="artikelImageLabel" layoutX="480.0" layoutY="201.0" prefHeight="20.0" prefWidth="202.0" textAlignment="RIGHT">
@@ -82,7 +82,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="artikelLoeschenButton" layoutX="480.0" layoutY="380.0" mnemonicParsing="false" text="Löschen" />
+                  <Button fx:id="artikelLoeschenButton" layoutX="480.0" layoutY="380.0" mnemonicParsing="false" onAction="#handleDeleteArtikel" text="Löschen" />
                </children></AnchorPane>
       </content>
     </Tab>
