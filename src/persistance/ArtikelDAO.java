@@ -44,7 +44,7 @@ public class ArtikelDAO extends DAO{
             connection.close();
             return true;
         } catch (SQLException s) {
-            logger.debug("createTable fehlgeschlagen, Tabelle vorhanden?", s);
+            logger.debug("createTable fehlgeschlagen, Tabelle vorhanden?");
             return false;
         }
     }

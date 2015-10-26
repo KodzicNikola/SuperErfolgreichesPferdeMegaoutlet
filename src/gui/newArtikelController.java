@@ -2,9 +2,11 @@ package gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import service.DataManagementService;
 
 public class newArtikelController {
@@ -22,6 +24,9 @@ public class newArtikelController {
     @FXML
     private TextField preisField;
 
+    @FXML
+    private Button abbrechenButton;
+
     public void handleSpeichernButton(){
         String name = nameField.getText();
         String bildadresse = imageLabel.getText();
@@ -30,7 +35,8 @@ public class newArtikelController {
 
         try{
             DataManagementService.createNewArtikel(name, bildadresse, preis, stueckzahl);
-            //TODO return
+            Stage stage = (Stage) abbrechenButton.getScene().getWindow();
+            stage.close();
         } catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Erstellen fehlgeschlagen");
@@ -42,7 +48,7 @@ public class newArtikelController {
 
 
     public void handleAbbrechenButton(){
-        //TODO
-        return;
+        Stage stage = (Stage) abbrechenButton.getScene().getWindow();
+        stage.close();
     }
 }

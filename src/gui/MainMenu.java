@@ -15,9 +15,6 @@ public class MainMenu extends Application {
 
         new ArtikelDAO().createTable();
         new RechnungsDAO().createTable();
-        Artikel a = new Artikel("testArtikel", new Float(0.99), 50, "", false);
-        System.out.println(a.getId());
-        System.out.println(new ArtikelDAO().create(a));
 
         launch(args);
     }

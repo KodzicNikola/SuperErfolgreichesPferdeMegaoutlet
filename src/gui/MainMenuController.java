@@ -8,9 +8,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import service.DataManagementService;
 
 import java.util.Optional;
@@ -155,7 +160,9 @@ public class MainMenuController {
                 Image image = new Image(a.getBildadresse());
                 artikelImage.setImage(image);
             } catch (Exception e) {
-                logger.info("Konnte Artikelbild nicht finden");
+                if(!a.getBildadresse().equals("")){
+                    logger.info("Konnte Artikelbild nicht finden");
+                }
             }
             artikelImage.setVisible(true);
             artikelImageLabel.setText(a.getBildadresse());
@@ -185,8 +192,29 @@ public class MainMenuController {
         }
     }
 
-    public void handleNewArtikel(){
-        //TODO
+    /**
+     * Öffnet ein Fenster um einen neuen Artikel zu erstellen
+     */
+    public void handleNewArtikel() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("newArtikel.fxml"));
+
+            Stage secondaryStage = new Stage();
+
+
+            secondaryStage.initModality(Modality.WINDOW_MODAL);
+            secondaryStage.initOwner(artikelTable.getScene().getWindow());
+
+            secondaryStage.setTitle("Neuer Artikel");
+            secondaryStage.setScene(new Scene(root, 327, 391));
+            secondaryStage.show();
+
+            artikelTable.setVisible(false);
+            artikelTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllArtikel()));
+            artikelTable.setVisible(true);
+        } catch (Exception e){
+            logger.error("Menü für neue Artikel konnte nicht geöffnet werden.");
+        }
     }
 
     /**
@@ -253,6 +281,31 @@ public class MainMenuController {
         artikelTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllArtikel()));
         artikelTable.setVisible(false);
         artikelTable.setVisible(true);
+    }
+
+    /**
+     * Öffnet ein Fenster um neue Rechnungen zu erstellen
+     */
+    public void handleNewRechnung(){
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("newRechnung.fxml"));
+
+            Stage secondaryStage = new Stage();
+
+
+            secondaryStage.initModality(Modality.WINDOW_MODAL);
+            secondaryStage.initOwner(artikelTable.getScene().getWindow());
+
+            secondaryStage.setTitle("Neue Rechnung");
+            secondaryStage.setScene(new Scene(root, 713, 422));
+            secondaryStage.show();
+
+            rechnungenTable.setVisible(false);
+            rechnungenTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllRechungen()));
+            rechnungenTable.setVisible(true);
+        } catch (Exception e){
+            logger.error("Konnte Menü für neue Rechnung nicht öffnen.");
+        }
     }
 
 }

@@ -20,8 +20,6 @@
             <TableColumn fx:id="artikelStueckzahlColumn" prefWidth="74.0" text="Inventar" />
          </columns>
       </TableView>
-      <Button fx:id="abbrechenButton" layoutX="610.0" layoutY="384.0" mnemonicParsing="false" text="Abbrechen" />
-      <Button fx:id="speichernButton" layoutX="420.0" layoutY="384.0" mnemonicParsing="false" text="Speichern" />
       <Label layoutX="525.0" layoutY="14.0" prefHeight="19.0" prefWidth="69.0" text="Einträge:">
          <font>
             <Font size="15.0" />
@@ -44,20 +42,22 @@
             <Font size="15.0" />
          </font>
       </Label>
+      <TextField fx:id="stueckzahlField" layoutX="313.0" layoutY="149.0" prefHeight="25.0" prefWidth="92.0" />
+      <Button fx:id="addButton" layoutX="313.0" layoutY="186.0" mnemonicParsing="false" text="Hinzufügen" />
+      <Button fx:id="removeButton" layoutX="313.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Entfernen" />
+      <TextField fx:id="datumField" layoutX="431.0" layoutY="320.0" prefHeight="25.0" prefWidth="199.0" />
       <Button fx:id="datumButton" layoutX="650.0" layoutY="320.0" mnemonicParsing="false" text="Jetzt" />
       <Label layoutX="363.0" layoutY="323.0" prefHeight="19.0" prefWidth="57.0" text="Datum:">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="datumField" layoutX="431.0" layoutY="320.0" prefHeight="25.0" prefWidth="199.0" />
-      <TextField fx:id="stueckzahlField" layoutX="313.0" layoutY="149.0" prefHeight="25.0" prefWidth="92.0" />
+      <Button fx:id="speichernButton" layoutX="420.0" layoutY="384.0" mnemonicParsing="false" text="Speichern" />
+      <Button fx:id="abbrechenButton" layoutX="610.0" layoutY="384.0" mnemonicParsing="false" text="Abbrechen" />
       <Label layoutX="313.0" layoutY="118.0" prefHeight="19.0" prefWidth="84.0" text="Stückzahl:">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Button fx:id="addButton" layoutX="313.0" layoutY="186.0" mnemonicParsing="false" text="Hinzufügen" />
-      <Button fx:id="removeButton" layoutX="313.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Entfernen" />
    </children>
 </AnchorPane>

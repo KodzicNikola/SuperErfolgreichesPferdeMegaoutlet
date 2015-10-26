@@ -90,7 +90,7 @@ public class DataManagementService {
             throw new IllegalArgumentException("Der Preis muss als positive Zahl mit '.' als Dezimalzeich angegeben sein.");
         }
         preis *= 100;
-        Math.round(preis);//TODO richten!
+        Math.round(preis);
         preis *= 0.01;
 
         try {
@@ -101,11 +101,11 @@ public class DataManagementService {
         } catch (Exception e){
             throw new IllegalArgumentException("Die Stückzahl darf nur als ganze, positive Zahl angegeben werden.");
         }
-        boolean success = new ArtikelDAO().update(new Artikel(name,preis,stueckzahl,bildadresse,false));
+        boolean success = new ArtikelDAO().create(new Artikel(name,preis,stueckzahl,bildadresse,false));
         System.out.println(success);
         if(!success){
-            logger.error("Update eines Artikels fehlgeschlagen!");
-            throw new SQLException("Update fehlgeschlagen.");
+            logger.error("Erstellen eines Artikels fehlgeschlagen!");
+            throw new SQLException("Erstellen fehlgeschlagen.");
         }
     }
 }

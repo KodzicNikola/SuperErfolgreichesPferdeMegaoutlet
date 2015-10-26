@@ -75,7 +75,7 @@
                      </font>
                   </Label>
                   <Button fx:id="artikelSpeichernButton" layoutX="385.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleArtikelSpeichern" text="Speichern" />
-                  <Button fx:id="artikelNeuButton" layoutX="564.0" layoutY="380.0" mnemonicParsing="false" text="Neuer Artikel..." onAction="#handleNewArtikel"/>
+                  <Button fx:id="artikelNeuButton" layoutX="564.0" layoutY="380.0" mnemonicParsing="false" onAction="#handleNewArtikel" text="Neuer Artikel..." />
                   <Button fx:id="artikelImageButton" layoutX="386.0" layoutY="198.0" mnemonicParsing="false" text="Bild..." />
                   <Label fx:id="artikelImageLabel" layoutX="480.0" layoutY="201.0" prefHeight="20.0" prefWidth="202.0" textAlignment="RIGHT">
                      <font>
@@ -92,9 +92,9 @@
                <children>
                   <TableView fx:id="rechnungenTable" layoutX="14.0" layoutY="14.0" prefHeight="396.0" prefWidth="280.0">
                     <columns>
-                      <TableColumn fx:id="rechnungsIdColumn" prefWidth="89.0" text="ID" />
-                      <TableColumn fx:id="rechnungsDatumColumn" prefWidth="109.0" text="Datum" />
-                        <TableColumn fx:id="rechnungsSummeColumn" prefWidth="81.0" text="Summe" />
+                      <TableColumn fx:id="rechnungsIdColumn" prefWidth="56.0" text="ID" />
+                      <TableColumn fx:id="rechnungsDatumColumn" prefWidth="134.0" text="Datum" />
+                        <TableColumn fx:id="rechnungsSummeColumn" prefWidth="89.0" text="Summe" />
                     </columns>
                   </TableView>
                   <TableView fx:id="rechnungsEintragsTable" layoutX="333.0" layoutY="39.0" prefHeight="328.0" prefWidth="353.0">
@@ -110,7 +110,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Button fx:id="rechnungNeuButton" layoutX="333.0" layoutY="385.0" mnemonicParsing="false" text="Neue Rechnung..." />
+                  <Button fx:id="rechnungNeuButton" layoutX="333.0" layoutY="385.0" mnemonicParsing="false" onAction="#handleNewRechnung" text="Neue Rechnung..." />
                   <Button fx:id="rechnungDeleteButton" layoutX="614.0" layoutY="385.0" mnemonicParsing="false" text="Löschen" />
                </children></AnchorPane>
       </content>
