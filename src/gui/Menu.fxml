@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
@@ -111,9 +112,42 @@
                      </font>
                   </Label>
                   <Button fx:id="rechnungNeuButton" layoutX="333.0" layoutY="385.0" mnemonicParsing="false" onAction="#handleNewRechnung" text="Neue Rechnung..." />
-                  <Button fx:id="rechnungDeleteButton" layoutX="614.0" layoutY="385.0" mnemonicParsing="false" text="Löschen" />
+                  <Button fx:id="rechnungDeleteButton" layoutX="614.0" layoutY="385.0" mnemonicParsing="false" onAction="#handleDeleteRechnungen" text="Löschen" />
                </children></AnchorPane>
       </content>
     </Tab>
+      <Tab text="Statistik">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="artikelStatistikTable" layoutX="14.0" layoutY="14.0" prefHeight="371.0" prefWidth="156.0">
+                    <columns>
+                      <TableColumn fx:id="artikelStatistikColumn" prefWidth="152.0" text="Artikel" />
+                    </columns>
+                  </TableView>
+                  <CheckBox fx:id="allegewaehltBox" layoutX="14.0" layoutY="395.0" mnemonicParsing="false" text="Alle auswählen" />
+                  <LineChart fx:id="artikelChart" layoutX="180.0" layoutY="14.0" prefHeight="371.0" prefWidth="500.0">
+                    <xAxis>
+                      <CategoryAxis fx:id="tageAxis" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="verkaufsAxis" side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+                  <TextField fx:id="zeitraumField" layoutX="299.0" layoutY="392.0" prefHeight="25.0" prefWidth="44.0" />
+                  <Label layoutX="180.0" layoutY="395.0" text="Zeitraum über">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="356.0" layoutY="395.0" text="Tage.">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
   </tabs>
 </TabPane>

@@ -11,6 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ValueAxis;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -90,6 +94,22 @@ public class MainMenuController {
     private Button rechnungNeuButton;
     @FXML
     private Button rechnungDeleteButton;
+
+    /**
+     * TAB: Statistik
+     */
+    @FXML
+    private TableView<Artikel> artikelStatistikTable;
+    @FXML
+    private TableColumn<Artikel,String> artikelStatistikColumn;
+    @FXML
+    private CheckBox allegewaehltBox;
+    @FXML
+    private LineChart<Integer, Integer> artikelChart;
+    @FXML
+    private NumberAxis verkaufsAxis;
+    @FXML
+    private CategoryAxis tageAxis;
 
 
     public MainMenuController(){
@@ -298,13 +318,34 @@ public class MainMenuController {
 
             secondaryStage.setTitle("Neue Rechnung");
             secondaryStage.setScene(new Scene(root, 713, 422f));
-            secondaryStage.show();
+            secondaryStage.showAndWait();
 
             rechnungenTable.setVisible(false);
             rechnungenTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllRechungen()));
             rechnungenTable.setVisible(true);
         } catch (Exception e){
             logger.error("Konnte Menü für neue Rechnung nicht öffnen.");
+        }
+    }
+
+    public void handleDeleteRechnungen(){
+        Rechnung r = rechnungenTable.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Rechnung löschen");
+        alert.setHeaderText(null);
+        alert.setContentText("Sind Sie sicher, dass Sie diese Rechnung unwiderruflich löschen wollen?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            int selectedIndex = rechnungenTable.getSelectionModel().getSelectedIndex();
+
+            if(DataManagementService.delete(r)){
+                rechnungenTable.getItems().remove(selectedIndex);
+                rechnungenTable.setVisible(false);
+                rechnungenTable.setVisible(true);
+
+            }
         }
     }
 

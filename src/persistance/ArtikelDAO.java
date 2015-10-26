@@ -180,13 +180,6 @@ public class ArtikelDAO extends DAO{
 
         try {
             Connection c = getConnection();
-            PreparedStatement p = c.prepareStatement("select Count(*) as alle from Artikel where id = ?");
-            p.setLong(1,a.getId());
-            ResultSet r = p.executeQuery();
-            while(r.next()){
-                System.out.println(r.getString("alle"));
-                System.out.println(a.getId());
-            }
             PreparedStatement prep = c.prepareStatement("UPDATE Artikel SET " +
                     "originalid = ?, name = ?, preis = ?, " +
                     "stueckzahl = ?, bildadresse = ?, klon = ? "+
@@ -202,7 +195,7 @@ public class ArtikelDAO extends DAO{
             prep = c.prepareStatement("SELECT * FROM Artikel WHERE id = ?;"); //Erstellt eine Abfrage um zu sehen, welche Artikel betroffen waren
             prep.setLong(1, a.getId());
 
-            r = prep.executeQuery();
+            ResultSet r = prep.executeQuery();
 
             if(!r.next()){
                 return false;
@@ -319,4 +312,22 @@ public class ArtikelDAO extends DAO{
         return results;
     }
 
+    public long getLastId() {
+        long result = 0;
+
+        try{
+            PreparedStatement p = getConnection().prepareStatement("SELECT ID FROM Artikel ORDER BY ID DESC;");
+            ResultSet r = p.executeQuery();
+
+            r.next();
+            result = r.getLong("ID");
+            r.close();
+            p.close();
+            r.close();
+        } catch (SQLException s){
+            logger.error("Letzte Artikel-ID konnte nicht geladen werden");
+        }
+
+        return result;
+    }
 }

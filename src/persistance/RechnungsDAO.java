@@ -20,7 +20,7 @@ public class RechnungsDAO extends DAO{
     private static final String initTabelle = "CREATE TABLE Rechnungen( " +
             "id INT," +
             "datum timestamp,"+
-            "artikelid bigint REFERENCES Artikel(id)," +
+            "artikelid bigint REFERENCES Artikel(id) on delete CASCADE ," +
             "originalartikel long,"+
             "primary key(id, artikelid));";
 
@@ -69,19 +69,28 @@ public class RechnungsDAO extends DAO{
 
         try{
             //Fügt ein, mithilfe eines PreparedStatements
-            PreparedStatement prep = getConnection().prepareStatement("INSERT INTO Rechnung(id, datum,"+
-                    "artikelid, originalartikel)"+
-                    " VALUES(?, ?, ?, ?)");
-            prep.setLong(1, r.getId());
-            prep.setTimestamp(2, r.getDate());
+            int id = getNextFreeId();
 
+            ArtikelDAO aao = new ArtikelDAO();
+            Artikel neu;
             for(Artikel a:r.getArtikelListe()){
-                prep.setLong(3,a.getId());
+
+                long newid = aao.getLastId();
+                neu = new Artikel(a.getOriginalId(),a.getName(),a.getPreis(),a.getStueckzahl(),a.getBildadresse(),true);
+                aao.create(neu);
+
+                PreparedStatement prep = getConnection().prepareStatement("INSERT INTO Rechnungen(id, datum,"+
+                        "artikelid, originalartikel)"+
+                        " VALUES(?, ?, ?, ?);");
+                prep.setLong(1, id);
+                prep.setTimestamp(2, r.getDate());
+
+                prep.setLong(3,newid);
                 prep.setLong(4,a.getOriginalId());
                 prep.execute();
+                prep.close();
             }
 
-            prep.close();
             getConnection().close();
             return true;
         } catch (SQLException s){
@@ -108,11 +117,11 @@ public class RechnungsDAO extends DAO{
         try {
             Connection c = getConnection();
             PreparedStatement prep = c.prepareStatement("DELETE FROM Rechnungen WHERE id = ?;");
-            prep.setLong(1,r.getId());
+            prep.setInt(1,r.getId());
             prep.execute();
-            prep.close();
 
-            prep = c.prepareStatement("SELECT * FROM Artikel WHERE id = ?;");
+
+            prep = c.prepareStatement("SELECT * FROM Rechnungen WHERE id = ?;");
             prep.setLong(1,r.getId());
             ResultSet result = prep.executeQuery();
 
@@ -145,10 +154,11 @@ public class RechnungsDAO extends DAO{
 
         try{
             c = getConnection();
-            p = c.prepareStatement("SELECT * FROM Rechnungen");
+            p = c.prepareStatement("SELECT * FROM Rechnungen;");
             r = p.executeQuery();
             result = toRechnungen(r);
             r.close();
+
             p.close();
             c.close();
 
@@ -169,7 +179,11 @@ public class RechnungsDAO extends DAO{
     private ArrayList<Rechnung> toRechnungen(ResultSet results) {
 
         HashMap<Integer,Rechnung> gefundeneRechnungen = new HashMap<>(); //Merkt sich alle gefundenen Rechnungen
+        HashMap<Long,Integer> fehlendeZuweisung = new HashMap<>(); //Merkt sich, welche Artikel noch einer Rechnung zugewisen werden müssen
         try{
+
+            ArrayList<Float> IDs = new ArrayList<>();
+
             while(results.next()){  //Erstellt und befüllt Rechnungen
                 Integer id = results.getInt("id");
                 Rechnung r;
@@ -180,11 +194,20 @@ public class RechnungsDAO extends DAO{
                     r = gefundeneRechnungen.get(id);
                 }
 
-                ArtikelDAO adao = new ArtikelDAO();
-                Artikel a = adao.getArtikelById(id);
-                r.addArtikel(a);
+                fehlendeZuweisung.put(results.getLong("artikelid"),id);
 
             }
+            ArtikelDAO adao = new ArtikelDAO();
+
+            for(Rechnung r : gefundeneRechnungen.values()){
+                for(Long artikelId : fehlendeZuweisung.keySet()){
+                    if(r.getId() == fehlendeZuweisung.get(artikelId)){
+                        r.addArtikel(adao.getArtikelById(artikelId));
+                    }
+                }
+            }
+            results.close();
+
         } catch (SQLException s){
             logger.debug("toRechnung fehlgeschlagen", s);
         }

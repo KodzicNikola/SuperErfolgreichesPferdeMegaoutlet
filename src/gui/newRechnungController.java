@@ -194,6 +194,8 @@ public class newRechnungController {
     public void handleSpeichernButton(){
         try {
             DataManagementService.createNewRechnung(eintraege,datumField.getText());
+
+            handleAbbrechenButton();
         } catch (Exception e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(e.getMessage());
