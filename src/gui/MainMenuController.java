@@ -297,7 +297,7 @@ public class MainMenuController {
             secondaryStage.initOwner(artikelTable.getScene().getWindow());
 
             secondaryStage.setTitle("Neue Rechnung");
-            secondaryStage.setScene(new Scene(root, 713, 422));
+            secondaryStage.setScene(new Scene(root, 713, 422f));
             secondaryStage.show();
 
             rechnungenTable.setVisible(false);

@@ -7,7 +7,10 @@ import org.apache.log4j.Logger;
 import persistance.ArtikelDAO;
 import persistance.RechnungsDAO;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class DataManagementService {
@@ -107,5 +110,39 @@ public class DataManagementService {
             logger.error("Erstellen eines Artikels fehlgeschlagen!");
             throw new SQLException("Erstellen fehlgeschlagen.");
         }
+    }
+
+    /**
+     * Erstellt eine neue Rechnung
+     * @param eintraege Einträge der neuen Rechnung
+     * @param sTime      Zeitpunk der Rechnung
+     */
+    public static void createNewRechnung(ArrayList<Artikel> eintraege, String sTime) {
+
+        RechnungsDAO rao = new RechnungsDAO();
+        ArtikelDAO aao = new ArtikelDAO();
+
+        long time;
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+            time = sdf.parse(sTime).getTime();
+        } catch (Exception e) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                time = sdf.parse(sTime).getTime();
+            } catch (Exception f){
+                throw new IllegalArgumentException("Der Zeitpunkt muss im Format 'yyyy-MM-dd hh:mm:ss' angegeben werden.");
+            }
+        }
+
+        rao.create(new Rechnung(rao.getNextFreeId(),new Timestamp(time), eintraege));
+
+        for(Artikel a: eintraege){
+            Artikel original = aao.getArtikelById(a.getOriginalId());
+            original.setStueckzahl(original.getStueckzahl()-a.getStueckzahl());
+            aao.update(original);
+        }
+
     }
 }

@@ -143,4 +143,8 @@ public class Artikel implements Domain {
     public long getId() {
         return id;
     }
+
+    public void setStueckzahl(int stueckzahl) {
+        this.stueckzahl = stueckzahl;
+    }
 }
