@@ -145,6 +145,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
+                  <Button fx:id ="statistikButton" layoutX="618.0" layoutY="392.0" mnemonicParsing="false" text="Laden" onAction="#handleStatistik"/>
                </children>
             </AnchorPane>
         </content>

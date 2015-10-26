@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +22,10 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import service.DataManagementService;
+import service.StatistikService;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -105,11 +109,15 @@ public class MainMenuController {
     @FXML
     private CheckBox allegewaehltBox;
     @FXML
-    private LineChart<Integer, Integer> artikelChart;
+    private LineChart<String, Integer> artikelChart;
     @FXML
     private NumberAxis verkaufsAxis;
     @FXML
     private CategoryAxis tageAxis;
+    @FXML
+    private Button statistikButton;
+    @FXML
+    private TextField zeitraumField;
 
 
     public MainMenuController(){
@@ -158,6 +166,14 @@ public class MainMenuController {
         rechnungenTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showRechnungsDetails(newValue));
 
+        //Erstellt Statistik
+        artikelStatistikColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        artikelStatistikTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllArtikel()));
+        artikelStatistikTable.setVisible(false);
+        artikelStatistikTable.setVisible(true);
+
+        artikelChart.setTitle("Verkaufte Artikel");
+        verkaufsAxis.setAutoRanging(true);
     }
 
 
@@ -328,6 +344,9 @@ public class MainMenuController {
         }
     }
 
+    /**
+     * Löscht eine ausgewählte Rechnung
+     */
     public void handleDeleteRechnungen(){
         Rechnung r = rechnungenTable.getSelectionModel().getSelectedItem();
 
@@ -349,4 +368,13 @@ public class MainMenuController {
         }
     }
 
+
+    public void handleStatistik() {
+        Artikel a = artikelStatistikTable.getSelectionModel().getSelectedItem();
+        if(allegewaehltBox.isSelected()){
+            a = null;
+        }
+
+        StatistikService.createStatistik(artikelChart,tageAxis,verkaufsAxis,a,zeitraumField.getText());
+    }
 }

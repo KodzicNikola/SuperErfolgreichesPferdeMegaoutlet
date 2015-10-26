@@ -5,10 +5,7 @@ import domain.Domain;
 import domain.Rechnung;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -275,6 +272,37 @@ public class RechnungsDAO extends DAO{
         } catch (SQLException s) {
             logger.debug("getNextFreeID fehlgeschlagen, IDs müssen überprüft werden", s);
         }
+
+        return result;
+    }
+
+    public int getVerkaufteArtikelSince(Timestamp t) {
+        int result = 0;
+
+        try{
+            Connection c = getConnection();
+            PreparedStatement p = c.prepareStatement("SELECT * from Rechnungen where datum > ?;");
+            p.setTimestamp(1,t);
+            ResultSet r = p.executeQuery();
+
+            ArrayList<Long> IDs = new ArrayList<>();
+            while(r.next()){
+                IDs.add(r.getLong("artikelID"));
+            }
+
+            r.close();
+            p.close();
+            c.close();
+            ArtikelDAO aao = new ArtikelDAO();
+            for(Long id: IDs){
+                Artikel a = aao.getArtikelById(id);
+                result += a.getStueckzahl();
+            }
+        } catch (SQLException s){
+            logger.error("Konnte keine Statistik laden");
+            throw new IllegalArgumentException("Zugriff auf Datenbank fehlgeschlagen.");
+        }
+
 
         return result;
     }

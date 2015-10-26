@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import persistance.ArtikelDAO;
 import persistance.RechnungsDAO;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
