@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.newRechnungController">
+   <children>
+      <TableView fx:id="artikelTable" layoutX="14.0" layoutY="14.0" prefHeight="393.0" prefWidth="284.0">
+         <columns>
+            <TableColumn fx:id="artikelNameColumn" prefWidth="147.0" text="Artikel" />
+            <TableColumn fx:id="artikelPreisColumn" prefWidth="62.0" text="Preis" />
+            <TableColumn fx:id="artikelStueckzahlColumn" prefWidth="74.0" text="Inventar" />
+         </columns>
+      </TableView>
+      <Button fx:id="abbrechenButton" layoutX="610.0" layoutY="384.0" mnemonicParsing="false" text="Abbrechen" />
+      <Button fx:id="speichernButton" layoutX="420.0" layoutY="384.0" mnemonicParsing="false" text="Speichern" />
+      <Label layoutX="525.0" layoutY="14.0" prefHeight="19.0" prefWidth="69.0" text="Einträge:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TableView fx:id="eintragsTable" layoutX="420.0" layoutY="40.0" prefHeight="267.0" prefWidth="279.0">
+         <columns>
+            <TableColumn fx:id="eintragsNamenColumn" prefWidth="153.0" text="Artikel" />
+            <TableColumn fx:id="eintragsPreisColumn" minWidth="0.0" prefWidth="58.0" text="Preis" />
+            <TableColumn fx:id="eintragsStueckzahlColumn" prefWidth="67.0" text="Stück" />
+         </columns>
+      </TableView>
+      <Label layoutX="357.0" layoutY="355.0" prefHeight="19.0" prefWidth="63.0" text="Summe:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="summeLabel" layoutX="430.0" layoutY="355.0" prefHeight="19.0" prefWidth="148.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="datumButton" layoutX="650.0" layoutY="320.0" mnemonicParsing="false" text="Jetzt" />
+      <Label layoutX="363.0" layoutY="323.0" prefHeight="19.0" prefWidth="57.0" text="Datum:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="datumField" layoutX="431.0" layoutY="320.0" prefHeight="25.0" prefWidth="199.0" />
+      <TextField fx:id="stueckzahlField" layoutX="313.0" layoutY="149.0" prefHeight="25.0" prefWidth="92.0" />
+      <Label layoutX="313.0" layoutY="118.0" prefHeight="19.0" prefWidth="84.0" text="Stückzahl:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="addButton" layoutX="313.0" layoutY="186.0" mnemonicParsing="false" text="Hinzufügen" />
+      <Button fx:id="removeButton" layoutX="313.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Entfernen" />
+   </children>
+</AnchorPane>
