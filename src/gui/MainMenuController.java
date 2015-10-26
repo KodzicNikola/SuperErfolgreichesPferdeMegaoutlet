@@ -61,7 +61,9 @@ public class MainMenuController {
      * TAB: Rechnungen
      */
     @FXML
-    private TableView rechnungenTable;
+    private TableView<Rechnung> rechnungenTable;
+    @FXML
+    private TableView<Artikel> rechnungsEintragsTable;
 
     @FXML
     private TableColumn<Rechnung, Integer> rechnungsIdColumn;
@@ -125,7 +127,11 @@ public class MainMenuController {
         artikelSummeEintragColumn.setCellValueFactory(cellData
                 -> new SimpleFloatProperty(cellData.getValue().getPreis()*cellData.getValue().getStueckzahl()).asObject());
 
+        showRechnungsDetails(null);
+
         rechnungenTable.setItems(FXCollections.observableArrayList(DataManagementService.readAllRechungen()));
+        rechnungenTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showRechnungsDetails(newValue));
 
     }
 
@@ -164,6 +170,26 @@ public class MainMenuController {
     }
 
     /**
+     * Zeigt die Einträge einer ausgewählten Rechnung
+     * @param r  Die zu zeigende Rechnung
+     */
+    private void showRechnungsDetails(Rechnung r) {
+        if (r==null){
+            rechnungsEintragsTable.setItems(FXCollections.observableArrayList());
+            rechnungsEintragsTable.setVisible(false);
+            rechnungsEintragsTable.setVisible(true);
+        } else {
+            rechnungsEintragsTable.setItems(FXCollections.observableArrayList(r.getArtikelListe()));
+            rechnungsEintragsTable.setVisible(false);
+            rechnungsEintragsTable.setVisible(true);
+        }
+    }
+
+    public void handleNewArtikel(){
+        //TODO
+    }
+
+    /**
      * Löscht einen Artikel aus der Tabelle
      */
     public void handleDeleteArtikel(){
@@ -188,6 +214,9 @@ public class MainMenuController {
 
     }
 
+    /**
+     * Speichert die im Menü gemachten änderungen
+     */
     public void handleArtikelSpeichern(){
         String name;
         String bildadresse = artikelTable.getSelectionModel().getSelectedItem().getBildadresse();

@@ -47,8 +47,11 @@ public class DataManagementService {
         int stueckzahl;
         try {
             preis = Float.parseFloat(sPreis);
+            if(preis < 0){
+                throw new IllegalArgumentException();
+            }
         } catch (Exception e){
-            throw new IllegalArgumentException("Der Preis muss als Zahl mit '.' als Dezimalzeich angegeben sein.");
+            throw new IllegalArgumentException("Der Preis muss als positive Zahl mit '.' als Dezimalzeich angegeben sein.");
         }
         preis *= 100;
         Math.round(preis);//TODO richten!
@@ -56,10 +59,49 @@ public class DataManagementService {
 
         try {
             stueckzahl = Integer.parseInt(sStueckzahl);
+            if(stueckzahl<0){
+                throw new IllegalAccessError();
+            }
         } catch (Exception e){
-            throw new IllegalArgumentException("Die Stückzahl darf nur als ganze Zahl angegeben werden.");
+            throw new IllegalArgumentException("Die Stückzahl darf nur als ganze, positve Zahl angegeben werden.");
         }
         boolean success = new ArtikelDAO().update(new Artikel(id,-1,name,preis,stueckzahl,bildadresse,false));
+        System.out.println(success);
+        if(!success){
+            logger.error("Update eines Artikels fehlgeschlagen!");
+            throw new SQLException("Update fehlgeschlagen.");
+        }
+    }
+
+
+    public static void createNewArtikel(String name, String bildadresse, String sPreis, String sStueckzahl) throws SQLException {
+        float preis;
+        int stueckzahl;
+        if(name.length() == 0){
+            throw new IllegalArgumentException("Ein Artikel muss einen Namen enthalten.");
+        }
+
+        try {
+            preis = Float.parseFloat(sPreis);
+            if(preis < 0) {
+                throw new IllegalArgumentException();
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Der Preis muss als positive Zahl mit '.' als Dezimalzeich angegeben sein.");
+        }
+        preis *= 100;
+        Math.round(preis);//TODO richten!
+        preis *= 0.01;
+
+        try {
+            stueckzahl = Integer.parseInt(sStueckzahl);
+            if(stueckzahl<0){
+                throw new IllegalAccessError();
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Die Stückzahl darf nur als ganze, positive Zahl angegeben werden.");
+        }
+        boolean success = new ArtikelDAO().update(new Artikel(name,preis,stueckzahl,bildadresse,false));
         System.out.println(success);
         if(!success){
             logger.error("Update eines Artikels fehlgeschlagen!");
