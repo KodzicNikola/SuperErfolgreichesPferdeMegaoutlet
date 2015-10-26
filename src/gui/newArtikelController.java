@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import service.DataManagementService;
 
@@ -50,5 +51,12 @@ public class newArtikelController {
     public void handleAbbrechenButton(){
         Stage stage = (Stage) abbrechenButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void handleBildButton(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        imageLabel.setText(fileChooser.showOpenDialog(nameField.getScene().getWindow()).getPath());
+
     }
 }

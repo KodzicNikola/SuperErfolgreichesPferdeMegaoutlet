@@ -71,7 +71,7 @@ public class StatistikService {
                 tage.add(t.toString().substring(0,10));
             }
             Collections.reverse(tage);
-            tageAxis.setCategories((FXCollections.observableArrayList(tage));
+            tageAxis.setCategories((FXCollections.observableArrayList(tage)));
 
             for(Timestamp t : xAchse){
                 series.getData().add(new XYChart.Data<>(t.toString().substring(0,10),countArtikelSince(t,a)));
